@@ -39,7 +39,7 @@ namespace StoreWebAPI.Controllers
             User user = db.Users.Where(c => c.APIToken == token).First();
             Order order = db.Orders.Where(c => c.UserId == user.Id && c.Id == order_id).First(); 
 
-            if (order == null)
+            if (order == null || user == null)
             {
                 return NotFound();
             }
@@ -47,22 +47,31 @@ namespace StoreWebAPI.Controllers
             return Ok(new OrderE(order.Id, order.Amount, order.InvoiceNo, user.Email));
         }
 
-        /*
-        // POST: api/Orders
-        [ResponseType(typeof(Order))]
-        public async Task<IHttpActionResult> PostOrder(Order order)
+
+        // POST:  sklepAPI/Orders/token=&order_id=
+        [HttpPut]
+        public async Task<IHttpActionResult> PutOrder(string token, int order_id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Orders.Add(order);
+            User user = db.Users.Where(c => c.APIToken == token).First();
+            Order order = db.Orders.Where(c => c.UserId == user.Id && c.Id == order_id).First();
+
+            if (order == null || user == null)
+            {
+                return NotFound();
+            }
+
+            order.Unpaid = false;
+            
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = order.Id }, order);
+            return Ok();
         }
-        */
+        
 
         protected override void Dispose(bool disposing)
         {
