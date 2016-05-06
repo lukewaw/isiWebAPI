@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using StoreWebAPI.Models;
+using System.Globalization;
 
 namespace StoreWebAPI.Controllers
 {
@@ -24,6 +25,23 @@ namespace StoreWebAPI.Controllers
             User user = db.Users.Where(c => c.APIToken == token).First();
             var orders =  db.Orders.Where(c => c.UserId == user.Id && c.Unpaid == unpaid).ToList();
             
+            if (orders == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(orders);
+        }
+
+        // GET: sklepAPI/Orders?token=&unpaid=
+        [HttpGet]
+        public async Task<IHttpActionResult> GetUnpaidOrdersInDates(string token, bool unpaid, string startDate, string endDate)
+        {
+            User user = db.Users.Where(c => c.APIToken == token).First();
+            DateTime start = DateTime.ParseExact(startDate, "ddMMYYYY", CultureInfo.InvariantCulture);
+            DateTime end = DateTime.ParseExact(endDate, "ddMMYYYY", CultureInfo.InvariantCulture);
+            var orders = db.Orders.Where(c => c.UserId == user.Id && c.Unpaid == unpaid && c.OrderDate >= start && c.OrderDate <= end).ToList();
+
             if (orders == null)
             {
                 return NotFound();

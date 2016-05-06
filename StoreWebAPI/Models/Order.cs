@@ -19,11 +19,10 @@ namespace StoreWebAPI.Models
         [DataMember]
         public int Id { get; set; }
         public int UserId { get; set; }
-        public string InvoiceNo { get; set; }
         [DataMember]
+        public string InvoiceNo { get; set; }
         public Nullable<decimal> Amount { get; set; }
         public bool Unpaid { get; set; }
-
-
+        public Nullable<System.DateTime> OrderDate { get; set; }
     }
 }

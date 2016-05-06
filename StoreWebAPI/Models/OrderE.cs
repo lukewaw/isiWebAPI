@@ -28,5 +28,7 @@ namespace StoreWebAPI.Models
         public string invoiceNo { get; set; }
         [DataMember]
         public string email { get; set; }
+        [DataMember]
+        public Nullable<System.DateTime> OrderDate { get; set; }
     }
 }
