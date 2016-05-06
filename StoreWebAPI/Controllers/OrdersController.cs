@@ -33,13 +33,24 @@ namespace StoreWebAPI.Controllers
             return Ok(orders);
         }
 
-        // GET: sklepAPI/Orders?token=&unpaid=
+        // GET: sklepAPI/Orders?token=&unpaid=&startDate&endDate
         [HttpGet]
         public async Task<IHttpActionResult> GetUnpaidOrdersInDates(string token, bool unpaid, string startDate, string endDate)
         {
             User user = db.Users.Where(c => c.APIToken == token).First();
-            DateTime start = DateTime.ParseExact(startDate, "ddMMYYYY", CultureInfo.InvariantCulture);
-            DateTime end = DateTime.ParseExact(endDate, "ddMMYYYY", CultureInfo.InvariantCulture);
+            DateTime start;
+            DateTime end;
+
+            try
+            {
+                start = DateTime.ParseExact(startDate, "ddMMyyyy", CultureInfo.InvariantCulture);
+                end = DateTime.ParseExact(endDate, "ddMMyyyy", CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                return NotFound();
+            }
+           
             var orders = db.Orders.Where(c => c.UserId == user.Id && c.Unpaid == unpaid && c.OrderDate >= start && c.OrderDate <= end).ToList();
 
             if (orders == null)
@@ -66,7 +77,7 @@ namespace StoreWebAPI.Controllers
         }
 
 
-        // POST:  sklepAPI/Orders/token=&order_id=
+        // Put:  sklepAPI/Orders/token=&order_id=
         [HttpPut]
         public async Task<IHttpActionResult> PutOrder(string token, int order_id)
         {
