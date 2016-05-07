@@ -14,7 +14,8 @@
           <Property Name="InvoiceNo" Type="nvarchar" MaxLength="50" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Unpaid" Type="bit" Nullable="false" />
-          <Property Name="OrderDate" Type="datetime" />
+          <Property Name="OrderDate" Type="datetime" Nullable="false" />
+          <Property Name="Currency" Type="nchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -42,7 +43,8 @@
           <Property Name="InvoiceNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Unpaid" Type="Boolean" Nullable="false" />
-          <Property Name="OrderDate" Type="DateTime" Precision="3" />
+          <Property Name="OrderDate" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="Currency" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -66,6 +68,7 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="StoreISIModel.Order">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="Currency" ColumnName="Currency" />
                 <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />

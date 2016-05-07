@@ -12,17 +12,21 @@ namespace StoreWebAPI.Models
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
+    using System.Xml.Serialization;
 
-    [DataContract]
+  
+    [DataContract(Name = "Order", Namespace = "")]
     public partial class Order
     {
         [DataMember]
         public int Id { get; set; }
-        public int UserId { get; set; }
-        [DataMember]
+        public int UserId { get; set; }       
         public string InvoiceNo { get; set; }
+        [DataMember]
         public Nullable<decimal> Amount { get; set; }
         public bool Unpaid { get; set; }
-        public Nullable<System.DateTime> OrderDate { get; set; }
+        public System.DateTime OrderDate { get; set; }
+        [DataMember]
+        public string Currency { get; set; }
     }
 }

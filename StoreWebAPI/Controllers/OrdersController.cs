@@ -23,8 +23,9 @@ namespace StoreWebAPI.Controllers
         public async Task<IHttpActionResult> GetUnpaidOrders(string token, bool unpaid)
         {
             User user = db.Users.Where(c => c.APIToken == token).First();
+
             var orders =  db.Orders.Where(c => c.UserId == user.Id && c.Unpaid == unpaid).ToList();
-            
+
             if (orders == null)
             {
                 return NotFound();
@@ -73,7 +74,7 @@ namespace StoreWebAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(new OrderE(order.Id, order.Amount, order.InvoiceNo, user.Email));
+            return Ok(new OrderE(order.Id, order.Amount, order.InvoiceNo, user.Email, order.Currency));
         }
 
 
